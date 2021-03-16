@@ -51,12 +51,12 @@ def segment_horizontally(img):
 def segment_vertically(img):
     rows, cols = img.shape
     returned = []
-    utolso_feher_oszlop = None
+    utolso_feher_oszlop = -1
 
     for i in range(cols):
         col = img[:, i]
         if all(x == 255 for x in col):
-            if utolso_feher_oszlop is not None and utolso_feher_oszlop + 1 != i:
+            if utolso_feher_oszlop + 1 != i and i != 0:
                 returned.append(img[:, utolso_feher_oszlop + 1:i])
             utolso_feher_oszlop = i
 
