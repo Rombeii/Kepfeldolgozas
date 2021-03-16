@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     cv.imshow('Original', pdf)
 
-    Preprocessor.test_binarization_options(pdf)
+    # Preprocessor.test_binarization_options(pdf)
 
     preprocessed_image = Preprocessor.preprocess(pdf, True)
 
@@ -29,17 +29,5 @@ if __name__ == '__main__':
     cv.imwrite('harmadik.png', letters[2])
     cv.imwrite('negyedik.png', letters[3])
     cv.imwrite('otodik.png', letters[4])
-
-    # pdf = cv.imread('L.png')
-    # cv.imshow('Original', pdf)
-    #
-    # cv.imshow('INTER_NEAREST', cv.resize(pdf, dsize=(64, 64), interpolation=cv.INTER_NEAREST))
-    # cv.imshow('INTER_LINEAR_EXACT', cv.resize(pdf, dsize=(64, 64), interpolation=cv.INTER_LINEAR_EXACT))
-    # cv.imshow('INTER_CUBIC', cv.resize(pdf, dsize=(64, 64), interpolation=cv.INTER_CUBIC))
-    # cv.imshow('INTER_AREA', cv.resize(pdf, dsize=(64, 64), interpolation=cv.INTER_AREA))
-    # cv.imshow('INTER_LANCZOS4', cv.resize(pdf, dsize=(64, 64), interpolation=cv.INTER_LANCZOS4))
-
-
-
 
     cv.waitKey(0)
