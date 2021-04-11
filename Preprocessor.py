@@ -1,9 +1,8 @@
 import time
 import numpy as np
-import cv2 as cv
 
 
-def preprocess(img, do_filter):
+def preprocess(img, do_filter=True):
     print("Preprocessing started")
     start = time.time()
 
@@ -34,7 +33,7 @@ def convert_to_greyscale(img):
 
     for i in range(cols):
         for j in range(rows):
-            converted_image[i][j] = int(img[i][j][0]*0.2126 + img[i][j][1]*0.7152 + img[i][j][2] * 0.0722)
+            converted_image[i][j] = int(img[i][j][0] * 0.2126 + img[i][j][1] * 0.7152 + img[i][j][2] * 0.0722)
 
     return converted_image
 
@@ -63,13 +62,5 @@ def filter_anomaly(img):
 
 
 def neighbors(im, i, j, i_end, j_end):
-    n = im[max(i-1, 0):min(i+2, i_end), max(j-1, 0):min(j+2, j_end)].flatten()
+    n = im[max(i - 1, 0):min(i + 2, i_end), max(j - 1, 0):min(j + 2, j_end)].flatten()
     return n
-
-
-def test_binarization_options(img):
-    converted_image = convert_to_greyscale(img)
-    for i in range(80, 240, 10):
-        x = converted_image.copy()
-        binarize(x, i)
-        cv.imwrite(str(i) + '.png', x)

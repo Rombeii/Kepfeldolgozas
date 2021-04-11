@@ -30,8 +30,7 @@ def extract_letters(img):
     end = time.time()
     print('\t\t{} rows extracted in {:.2f} seconds'.format(len(rows), end - start))
 
-    cv.imshow('elso_sor', rows[0].img)
-    cv.imwrite('elso_sor.png', rows[0].img)
+    cv.imwrite('output/elso_sor.png', rows[0].img)
 
     print("\tExtracting letters")
     letters = []
@@ -66,6 +65,9 @@ def segment_horizontally(segmented_img):
                                                segmented_img.img[utolso_feher_sor + 1:i, :]))
             utolso_feher_sor = i
 
+    if not returned:                                                        # ha nem volt rajta mit vágni
+        returned.append(segmented_img)
+
     return returned
 
 
@@ -82,5 +84,8 @@ def segment_vertically(segmented_img):
                                                i - (utolso_feher_oszlop + 1), segmented_img.height,
                                                segmented_img.img[:, utolso_feher_oszlop + 1:i]))
             utolso_feher_oszlop = i
+
+    if not returned:
+        returned.append(segmented_img)
 
     return returned

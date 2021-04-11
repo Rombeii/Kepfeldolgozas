@@ -6,7 +6,8 @@ def get_matrix():
     generated_hadamard = generate_hadamard()
     walsh = convert_to_Walsh(generated_hadamard)[:512, :512]
 
-    return get_blocks(walsh.astype(np.uint8)).reshape(8, 8, 64, 64)
+    return get_blocks(walsh.astype(np)).reshape(8, 8, 64, 64)
+    #return get_blocks(walsh.astype(np.uint8)).reshape(8, 8, 64, 64) ha meg is szeretnénk jeleníteni
 
 
 def convert_to_Walsh(generated_hadamard):
@@ -30,3 +31,16 @@ def get_blocks(matrix):
 
 def generate_hadamard():
     return hadamard(4096)
+
+
+def generate_feature_vector(picture, walsh_matrices):
+
+    rows = walsh_matrices.shape[0]
+    cols = walsh_matrices.shape[1]
+    picture[picture == 255] = 1
+    feature_vector = []
+    for row in range(rows):
+        for col in range(cols):
+            feature_vector.append(np.multiply(picture, walsh_matrices[row][col]).sum())
+
+    return feature_vector

@@ -1,46 +1,39 @@
-from scipy.linalg import hadamard
+import cv2 as cv
 import numpy as np
 
-
-def get_matrix():
-    generated_hadamard = generate_hadamard()
-    walsh = convert_to_Walsh(generated_hadamard)[:512, :512]
-
-    return get_blocks(walsh.astype(np)).reshape(8, 8, 64, 64)
-    #return get_blocks(walsh.astype(np.uint8)).reshape(8, 8, 64, 64) ha meg is szeretnénk jeleníteni
+import Walsh
+import Preprocessor
 
 
-def convert_to_Walsh(generated_hadamard):
-    rows, cols = generated_hadamard.shape
-
-    walsh = []
-    for i in range(rows):
-        positive = generated_hadamard[i] > 0
-        count = len(np.where(np.bitwise_xor(positive[1:], positive[:-1]))[0])  # megszámolja, hány sign váltás volt
-        walsh.append((count, generated_hadamard[i]))
-    walsh.sort()
-    return np.vstack([x[1] for x in walsh]) * -1
+def display_Walsh():
+    walsh_matrix = Walsh.get_matrix()
+    cv.imshow('1', walsh_matrix[0][0])
+    cv.imshow('2', walsh_matrix[0][1])
+    cv.imshow('3', walsh_matrix[0][2])
+    cv.imshow('5', walsh_matrix[1][0])
+    cv.imshow('6', walsh_matrix[2][0])
+    cv.imshow('4', Walsh.generate_hadamard().astype(np.uint8)[:512, :512])
 
 
-def get_blocks(matrix):
-    rows, cols = matrix.shape
-    return (matrix.reshape(rows // 64, 64, -1, 64)
-            .swapaxes(1, 2)
-            .reshape(-1, 64, 64))
+def test_binarization_options(img):
+    converted_image = Preprocessor.convert_to_greyscale(img)
+    for i in range(80, 240, 10):
+        x = converted_image.copy()
+        Preprocessor.binarize(x, i)
+        cv.imwrite(str(i) + '.png', x)
 
 
-def generate_hadamard():
-    return hadamard(4096)
+def show_extracted_letters(letters):
+    letters[0].show('elso')
+    letters[1].show('masodik')
+    letters[2].show('harmadik')
+    letters[3].show('negyedik')
+    letters[4].show('otodik')
 
-
-def generate_feature_vector(picture, walsh_matrices):
-
-    rows = walsh_matrices.shape[0]
-    cols = walsh_matrices.shape[1]
-    picture[picture == 255] = 1
-    feature_vector = []
-    for row in range(rows):
-        for col in range(cols):
-            feature_vector.append(np.multiply(picture, walsh_matrices[row][col]).sum())
-
-    return feature_vector
+    letters[0].write('elso_original.png')
+    letters[0].resize()
+    letters[0].write('elso_resized.png')
+    letters[1].write('masodik.png')
+    letters[2].write('harmadik.png')
+    letters[3].write('negyedik.png')
+    letters[4].write('otodik.png')
