@@ -5,7 +5,7 @@ import Walsh
 import numpy as np
 
 if __name__ == '__main__':
-    pdf = cv.imread('abc.jpg')
+    pdf = cv.imread('resources/abc.jpg')
 
     preprocessed_image = Preprocessor.preprocess(pdf, False)
 
