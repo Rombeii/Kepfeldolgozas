@@ -6,14 +6,15 @@ import Preprocessor
 
 
 def display_Walsh():
-    walsh_matrix = Walsh.get_matrix()
-    cv.imshow('1', walsh_matrix[0][0])
-    cv.imshow('2', walsh_matrix[0][1])
-    cv.imshow('3', walsh_matrix[0][2])
-    cv.imshow('5', walsh_matrix[1][0])
-    cv.imshow('6', walsh_matrix[2][0])
-    cv.imshow('4', Walsh.generate_hadamard().astype(np.uint8)[:512, :512])
+    generated_hadamard = Walsh.generate_hadamard(4096)
+    walsh = Walsh.convert_to_Walsh(generated_hadamard)[:512, :512]
+    walsh_matrix = Walsh.get_blocks(walsh.astype(np.uint8)).reshape(8, 8, 64, 64)
+    rows = walsh_matrix.shape[0]
+    cols = walsh_matrix.shape[1]
 
+    for row in range(rows):
+        for col in range(cols):
+            cv.imwrite("output/Walsh/{}_{}.png".format(row, col), walsh_matrix[row][col])
 
 def test_binarization_options(img):
     converted_image = Preprocessor.convert_to_greyscale(img)

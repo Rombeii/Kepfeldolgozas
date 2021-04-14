@@ -40,9 +40,13 @@ def extract_letters(img):
     print('\t\t{} letters extracted in {:.2f} seconds'.format(len(letters), end - start))
 
     print("\tCleaning letters")
+    temp = []
     letters_clean = []
     for index, letter in enumerate(letters):
         cleaned = segment_horizontally(letter)
+        temp.extend(cleaned)
+    for index, letter in enumerate(temp):
+        cleaned = segment_vertically(letter)
         letters_clean.extend(cleaned)
     end = time.time()
     print('\t\t{} letters cleaned in {:.2f} seconds'.format(len(letters_clean), end - start))
@@ -65,7 +69,12 @@ def segment_horizontally(segmented_img):
                                                segmented_img.img[utolso_feher_sor + 1:i, :]))
             utolso_feher_sor = i
 
-    if not returned:                                                        # ha nem volt rajta mit vágni
+    if utolso_feher_sor != rows - 1:                                        # ha az utolsó sor fekete
+        returned.append(SegmentedImage(segmented_img.x_coord, segmented_img.y_coord + rows,
+                                       segmented_img.width, rows - (utolso_feher_sor + 1),
+                                       segmented_img.img[utolso_feher_sor + 1:rows, :]))
+
+    if not returned:                                                        # ha nem történt vágás
         returned.append(segmented_img)
 
     return returned
@@ -84,6 +93,11 @@ def segment_vertically(segmented_img):
                                                i - (utolso_feher_oszlop + 1), segmented_img.height,
                                                segmented_img.img[:, utolso_feher_oszlop + 1:i]))
             utolso_feher_oszlop = i
+
+    if utolso_feher_oszlop != cols - 1:
+        returned.append(SegmentedImage(segmented_img.x_coord + cols, segmented_img.y_coord,
+                                       cols - (utolso_feher_oszlop + 1), segmented_img.height,
+                                       segmented_img.img[:, utolso_feher_oszlop + 1:cols]))
 
     if not returned:
         returned.append(segmented_img)
