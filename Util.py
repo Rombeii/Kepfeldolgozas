@@ -16,6 +16,7 @@ def display_Walsh():
         for col in range(cols):
             cv.imwrite("output/Walsh/{}_{}.png".format(row, col), walsh_matrix[row][col])
 
+
 def test_binarization_options(img):
     converted_image = Preprocessor.convert_to_greyscale(img)
     for i in range(80, 240, 10):

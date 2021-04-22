@@ -13,7 +13,7 @@ def preprocess(img, do_filter=True):
     start = end
 
     print("\tBinarizing image")
-    binarize(converted_image, 155)
+    binarize(converted_image, 140)
     end = time.time()
     print("\t\tBinarized in {:.2f} seconds".format(end - start))
     start = end
